@@ -11,8 +11,6 @@ display_height = 600
 gameDisplay = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('Tank War')
 
-
-
 wheat = (102, 145, 61)
 
 introcolor = (190, 169, 146)
@@ -56,6 +54,9 @@ smallfont = pygame.font.SysFont("comicsansms", 25)
 medfont = pygame.font.SysFont("comicsansms", 50)
 largefont = pygame.font.SysFont("Yu Mincho Demibold", 85)
 vsmallfont = pygame.font.SysFont("Yu Mincho Demibold", 25)
+
+victory = pygame.image.load("win.jpg")
+victory = pygame.transform.scale(victory, (800, 600))
 
 
 def text_objects(text, color, size="small"):
@@ -105,7 +106,7 @@ def game_controls():
 
         pygame.display.update()
 
-        clock.tick(15)
+        clock.tick(30)
 
 
 def pause():
@@ -428,7 +429,8 @@ def you_win():
                 pygame.quit()
                 quit()
 
-        gameDisplay.fill(black)
+        #gameDisplay.fill(black)
+        gameDisplay.blit(victory, (0, 0))
         message_to_screen("You won!", white, -100, size="large")
         message_to_screen("Congratulations!", wheat, -30)
 
@@ -444,7 +446,7 @@ def you_win():
 def gameLoop():
     gameExit = False
     gameOver = False
-    FPS = 15
+    FPS = 30
 
     player_health = 100
     enemy_health = 100
@@ -525,6 +527,7 @@ def gameLoop():
                                 enemyTankX -= 5
 
                             gameDisplay.fill(black)
+                            gameDisplay.blit(pygame.image.load("war.png"), (0, 0))
                             health_bars(player_health, enemy_health)
                             gun = tank(mainTankX, mainTankY, currentTurPos)
                             enemy_gun = enemy_tank(enemyTankX, enemyTankY, 8)
@@ -569,8 +572,11 @@ def gameLoop():
 
         if mainTankX - (tankWidth / 2) < xlocation + barrier_width:
             mainTankX += 5
+        if mainTankX > 780:
+            mainTankX -= 5
 
-        gameDisplay.fill(black)
+        #gameDisplay.fill(black)
+        gameDisplay.blit(pygame.image.load("war.png"), (0, 0))
         health_bars(player_health, enemy_health)
         gun = tank(mainTankX, mainTankY, currentTurPos)
         enemy_gun = enemy_tank(enemyTankX, enemyTankY, 8)
@@ -585,6 +591,7 @@ def gameLoop():
         power(fire_power)
 
         barrier(xlocation, randomHeight, barrier_width)
+
         gameDisplay.fill(base, rect=[0, display_height - ground_height, display_width, ground_height])
         pygame.display.update()
 
@@ -640,7 +647,9 @@ def game_intro():
 
                     pygame.quit()
                     quit()
-        gameDisplay.fill(black)
+
+        #gameDisplay.fill(black)
+        gameDisplay.blit(pygame.image.load("menu.jpg"), (0, 0))
         message_to_screen("Welcome to Tank War!", introcolor, -100, size="large")
         message_to_screen("Shoot and destroy the enemy tank", wheat, 15)
         message_to_screen("before they destroy you.", wheat, 60)
